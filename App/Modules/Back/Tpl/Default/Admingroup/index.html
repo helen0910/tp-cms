@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <include file="./Public/tpl/global_load.html" />
+        <include file="./App/Tpl/global_load.html" />
+    </head>
+    <body>
+        <include file="./App/Tpl/global_rule_navi.html" />
+        <table class="showTable">
+            <tr>
+                <th width="5%"><input type="checkbox" name="check_id_all" id="check_id_all" /></th>
+                <th width="5%">ID</th>
+                <th width="10%">角色名称</th>
+                <th width="55%">角色备注</th>
+                <th width="5%">状态</th>
+                <th width="20%">操作</th>
+            </tr>
+            <foreach name="adminGroup" item="values">
+                <tr>
+                    <td><input type='checkbox' name='id_all[]' value="<{$values['id']}>" /></td>
+                    <td><{$values['id']}></td>
+                    <td><{$values['title']}></td>
+                    <td style="text-align:left;"><{$values['remark']}></td>
+                    <td><{$values['status']==1 ? '正常' : '禁用'}></td>
+                    <td>
+                        <if condition="$values['is_super'] eq 1">
+                            <span class="disabled">系统权限</span>&nbsp;&nbsp;
+                            <span class="disabled">编辑</span>&nbsp;&nbsp;
+                            <else /> 
+                            <if condition="in_array('set_rule', $ruleOperate) ">
+                                <a href="###" class="operate" onclick="openNewWindow('<{:U('set_rule',array('id'=>$values['id']))}>', '系统权限')">系统权限</a>&nbsp;&nbsp;
+                            </if>
+                            <if condition="in_array('edit', $ruleOperate) ">
+                                <a href="<{:U('edit',array('id'=>$values['id']))}>" class="operate">编辑</a>&nbsp;&nbsp;
+                            </if>
+                        </if>
+                    </td>
+                </tr>
+            </foreach>
+        </table>
+    </body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <include file="./Public/tpl/global_load.html" />
+        <include file="./App/Tpl/global_load.html" />
+    </head>
+    <body>
+        <include file="./App/Tpl/global_rule_navi.html" />
+        <form action="__ACTION__" method="get" name="search_form">
+            <table class="showTable">
+                <tr>
+                    <td colspan="7">
+                        <div class="marginTop10">
+                            分派时间段：
+                            <input id="d_1" class="text date" type="text" onfocus="WdatePicker({startDate: '%y-%M-%d 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss'})" readonly="readonly" value="<{$_GET['start_time']}>" name="start_time" />
+                            到 <input id="d_2" class="text date" type="text" onfocus="WdatePicker({startDate: '%y-%M-%d 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'d_1\')}'});" readonly="readonly" value="<{$_GET['end_time']}>" name="end_time" />
+                            &nbsp;&nbsp;
+                            <br />
+                            <br />
+                            数据人员：<select name="data_user_id"><option value="">全部</option>
+                                <foreach name="dataUserArray" item="values">
+                                    <option value="<{$values.id}>" ><{$values.username}></option>
+                                </foreach>
+                            </select>&nbsp;&nbsp;
+                            运营人员：<select name="operator_id"><option value="">全部</option>
+                                <foreach name="optUserArray" item="values">
+                                    <option value="<{$values.id}>"><{$values.username}></option>
+                                </foreach>
+                            </select>&nbsp;&nbsp;
+                            任务状态：<select name="mession_status">
+                                <option value="0" <{$_GET['mession_status']=='0' ? 'selected="selected"' : ''}>>全部</option>
+                                <option value="1" <{$_GET['mession_status']=='1' ? 'selected="selected"' : ''}>>待分派</option>
+                                <option value="2" <{$_GET['mession_status']=='2' ? 'selected="selected"' : ''}>>已分派</option>
+                                <option value="3" <{$_GET['mession_status']=='3' ? 'selected="selected"' : ''}>>待确认</option>
+                                <option value="4" <{$_GET['mession_status']=='4' ? 'selected="selected"' : ''}>>已打回</option>
+                                <option value="5" <{$_GET['mession_status']=='5' ? 'selected="selected"' : ''}>>已完成</option>
+                                <option value="6" <{$_GET['mession_status']=='6' ? 'selected="selected"' : ''}>>已关闭</option>
+                                <option value="7" <{$_GET['mession_status']=='7' ? 'selected="selected"' : ''}>>已付款</option>   
+                            </select>&nbsp;&nbsp;
+                            <input type="button" class="smallSub" value="搜索" name="search" onclick="$.CR.G.searchs();" />&nbsp;&nbsp;
+                        </div>
+                        <div class="btns" style="float:right;">
+                            <switch name="mession_status">
+                                <case value="0"></case>
+                                <case value="1"></case>
+                                <case value="2">
+                                    <input type="button" value="任务确认" id="confirmM" class="sub" />&nbsp;&nbsp;
+                                    <input type="button" value="任务取消" onclick="_confirm('是否取消任务？', function () {
+                                                $.CR.G.bulkAction('<{:U('cancel_mession')}>')
+                                                });" class="sub" />&nbsp;&nbsp;
+                                </case>
+                                <case value="3">
+                                    <input type="button" value="任务确认" id="confirmM" class="sub" />&nbsp;&nbsp;
+                                    <input type="button" value="任务取消" onclick="_confirm('是否取消任务？', function () {
+                                                $.CR.G.bulkAction('<{:U('cancel_mession')}>')
+                                                });" class="sub" />&nbsp;&nbsp;
+                                </case>
+                                <case value="4">
+                                    <input type="button" value="查看" id="confirmVB" class="sub" />&nbsp;&nbsp;
+                                    <input type="button" value="任务取消" onclick="_confirm('是否取消任务？', function () {
+                                                $.CR.G.bulkAction('<{:U('cancel_mession')}>')
+                                                });" class="sub" />&nbsp;&nbsp;
+                                </case>
+                                <case value="5">
+                                    <input type="button" value="查看" id="confirmV" class="sub" />&nbsp;&nbsp;
+                                    <input type="button" value="付款" onclick="_confirm('是否付款？', function () { $.CR.G.bulkAction('<{:U('pay')}>')});" class="sub" />&nbsp;&nbsp;
+                                </case>
+                                <case value="6"></case>
+                                <case value="7"></case> 
+                                <default />
+                                <input type="button" value="任务确认" id="confirmM" class="sub" />&nbsp;&nbsp;
+                                <input type="button" value="任务取消" onclick="_confirm('是否取消任务？', function () {
+                                            $.CR.G.bulkAction('<{:U('cancel_mession')}>')
+                                            });" class="sub" />&nbsp;&nbsp;
+                            </switch>
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="5%"></th>
+                    <th width="8%">任务Id</th>
+                    <th width="10%">运营人员</th>
+                    <th width="8%">数据人员</th>
+                    <th width="14%">分派时间</th>
+                    <th width="14%">完成时间</th>
+                    <th width="5%">状态</th>
+                </tr>
+                <foreach name="taskArray[0]" item="values">
+                    <tr>
+                        <td><input type='radio' name='id_all[]' value="<{$values['mession_id']}>"  onchange="check(this)"/></td>
+                        <td><{$values['mession_id']}></td>
+                        <td><{$values['oname']}></td>
+                        <td><{$values['aname']}></td>
+                        <td><{$values['dispatch_time']|date="Y-m-d H:i:s",###}></td>
+                        <td><{$values['finished_time']?$values['finished_time']|date="Y-m-d H:i:s",###:''}></td>
+                        <td>
+                            <switch name="values['mession_status']">
+                                <case value="1">待分派</case>
+                                <case value="2">已分派</case>
+                                <case value="3">待确认</case>
+                                <case value="4">已打回</case>
+                                <case value="5">已完成</case>
+                                <case value="6">已关闭</case>
+                                <case value="7">已付款</case> 
+                            </switch>
+                        </td>
+                    </tr>
+                </foreach>
+                <tr>
+                    <td colspan="7"><{$taskArray[1]}></td>
+                </tr>
+            </table>
+        </form>
+        <script>
+                    var val;
+                    $(function () {
+                    val = $('input:radio:checked').val();
+                            if (val) {
+                    $('#confirmM').attr('onclick', "openNewWindow('<{:U('confirm',array('id'=>'" + val + "'))}>', '任务管理','80%')");
+                            $('#confirmV').attr('onclick', "openNewWindow('<{:U('view_mession',array('id'=>'" + val + "'))}>', '查看已完成任务','80%')");
+                            $('#confirmVB').attr('onclick', "openNewWindow('<{:U('view_back_mession',array('id'=>'" + val + "'))}>', '查看已打回任务','80%')");
+                    } else {
+                    $('#confirmM,#confirmV,#confirmVB').on('click', function () {
+                    _alert('请选择需要操作的数据！');
+                    });
+                    }
+                    });
+                    function check(obj) {
+                    $('#confirmM,#confirmV,#confirmVB').unbind();
+                            mid = $(obj).val();
+                            $('#confirmM').attr('onclick', "openNewWindow('<{:U('confirm',array('id'=>'" + mid + "'))}>', '任务管理','80%')");
+                            $('#confirmV').attr('onclick', "openNewWindow('<{:U('view_mession',array('id'=>'" + mid + "'))}>', '查看已完成任务','80%')");
+                            $('#confirmVB').attr('onclick', "openNewWindow('<{:U('view_back_mession',array('id'=>'" + mid + "'))}>', '查看已打回任务','80%')");
+                    }
+        </script>
+    </body>
+</html>

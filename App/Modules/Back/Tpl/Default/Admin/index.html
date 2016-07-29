@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <include file="./Public/tpl/global_load.html" />
+        <include file="./App/Tpl/global_load.html" />
+    </head>
+    <body>
+        <include file="./App/Tpl/global_rule_navi.html" />
+        <form action="__ACTION__" method="get" name="search_form">
+            <table class="showTable">
+                <tr><td colspan="8">
+                        <div class="marginTop10">
+                            用户名：
+                            <input type="text" name="username" size="25" value="<{$_GET['search_content']}>" placeholder="模糊查询" />&nbsp;&nbsp;
+                            状态：<select name="admin_status">
+                                <option value="">全部</option>
+                                <option value="1" <{$_GET['m_status']==1 ? 'selected="selected"' : ''}>>启用</option>
+                                <option value="2" <{$_GET['m_status']==2 ? 'selected="selected"' : ''}>>禁用</option>
+                            </select>&nbsp;&nbsp;
+                            <input type="button" class="smallSub" value="搜索" name="search" onclick="$.CR.G.searchs();" />
+                        </div>
+                    </td></tr>
+                <tr>
+                    <th width="5%">ID</th>
+                    <th width="8%">用户名</th>
+                    <th width="10%">邮箱</th>
+                    <th width="8%">手机号</th>
+                    <th width="14%">注册时间</th>
+                    <th width="5%">状态</th>
+                    <th width="10%">用户类别</th>
+                    <th width="15%">操作</th>
+                </tr>
+                <foreach name="adminArray[0]" item="values">
+                    <tr>
+                        <td><{$values['id']}></td>
+                        <td><{$values['username']}></td>
+                        <td><{$values['email']}></td>
+                        <td><{$values['phone']}></td>
+                        <td><{$values['reg_time']|date="Y-m-d H:i:s",###}></td>
+                        <td><{$values['admin_status']==1 ? '启用' : '禁用'}></td>
+                        <td>
+                            <foreach name="values['group']" item="groupVal">
+                                <{$groupVal['title']}>&nbsp;
+                            </foreach>
+                        </td>
+                        <td>
+                            <a href="<{:U('edit',array('id'=>$values['id']))}>" class="operate">编辑</a>&nbsp;&nbsp;
+                            <a href="###" onclick="(_confirm('是否确定要初始化密码？', function () {
+                                        location.href = '<?php echo U("resetpwd",array('id'=>$values['id']))?>'}))" class="operate">初始化密码</a>&nbsp;&nbsp;
+                        </td>
+                    </tr>
+                </foreach>
+                <tr>
+                    <td colspan="8" class="right"><{$adminArray[1]}></td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>

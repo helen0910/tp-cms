@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <include file="./Public/tpl/global_load.html" />
+        <include file="./App/Tpl/global_load.html" />
+    </head>
+    <body>
+        <include file="./App/Tpl/global_rule_navi.html" />
+        <div class="operateTitle">修改管理员</div>
+        <form action="__ACTION__" method="post" id="formData">
+            <input type="hidden" value="<{$current['id']}>" name="id" />
+            <input type="hidden" value="<{$token}>" name="token" />
+            <table class="formTable">
+                <tr>
+                    <td class="left"><span class="setRed">*</span>&nbsp;<span class="Validform_label">用户名：</span></td>
+                    <td class="right">
+                        <input type="text" class="text normal" value="<{$current['username']}>" size="35" name="username" datatype="/^[a-z][\w]{4,11}$/i" ajaxurl="<{:U('Back/Public/check_back_username',array('id'=>$current['id']))}>" errormsg="用户名格式不正确！" />
+                        <span class="setDesc Validform_checktip">字母开头，5-12位，只能包含[a-z\w],添加成功后不可更改</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left"><span class="setRed">*</span>&nbsp;<span class="Validform_label">手机号：</span></td>
+                    <td class="right">
+                        <input type="text" class="text normal" size="35" name="phone" value="<{$current['phone']}>" datatype="m" errormsg="手机号格式不正确！" />
+                        <span class="setDesc Validform_checktip">请输入正确的手机号。</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left"><span class="setRed">*</span>&nbsp;<span class="Validform_label">邮箱：</span></td>
+                    <td class="right">
+                        <input type="text" class="text normal" size="35" name="email" value="<{$current['email']}>" datatype="e" errormsg="邮箱格式不正确！" />
+                        <span class="setDesc Validform_checktip">请输入正确的邮箱。</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">
+                        <span class="setRed">*</span>&nbsp;<span class="Validform_label">所属权限组：</span>
+                    </td>
+                    <td class="right">
+                        <foreach name="groupData" item="values">
+                            <label><input type="checkbox" name="group[]" value="<{$values['id']}>" datatype="need_1" <{:in_array($values['id'], $group) ? 'checked="chekced"' : ''}> errormsg="请选择所属权限！" />&nbsp;<{$values['title']}></label>
+                        </foreach>
+                        <span class="setDesc Validform_checktip"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">状态：</td>
+                    <td class="right">
+                        <label>启用&nbsp;<input type="radio" value="1" name="admin_status" <{$current['admin_status']==1 ? 'checked="checked" ' : ''}>/></label>
+                        <label>禁用&nbsp;<input type="radio" value="2" name="admin_status" <{$current['admin_status']==2 ? 'checked="checked" ' : ''}>/></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">&nbsp;&nbsp;</td>
+                    <td class="right">
+                        <input type="submit" name="send" class="sub" value="提交" />
+                        <input type="reset" class="sub" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>

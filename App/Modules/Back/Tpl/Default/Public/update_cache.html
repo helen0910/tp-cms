@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <include file="./Public/tpl/global_load.html" />
+        <include file="./App/Tpl/global_load.html" />
+        <style type="text/css">
+            .formTable td.left {font-size:14px;font-weight:bold;text-align:left;text-indent:20px;}
+            .formTable td.right {width:auto;}
+        </style>
+    </head>
+    <body>
+        <div class="operateTitle">更新系统缓存</div>
+        <table class="formTable">
+            <tr>
+                <td class="left">全部缓存</td>
+                <td class="right">
+                    <input type="button" onclick="window.location = '<{:U('update_cache',array('type'=>'all'))}>'" value="更新" class="smallSub" />
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

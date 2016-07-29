@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <include file="./Public/tpl/global_load.html" />
+        <include file="./App/Tpl/global_load.html" />
+    </head>
+    <body>
+        <include file="./App/Tpl/global_rule_navi.html" />
+        <div class="search clearFloat">
+            <form action="__ACTION__" method="get" name="search_form">
+                <table>
+                    <tr>
+                        <td class="left">搜索[Search]：</td>
+                        <td class="right">
+                            <div>
+                                时间：<input id="d_1" class="text date" type="text" onfocus="WdatePicker({startDate: '%y-%M-%d 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss'})" readonly="readonly" value="<{$_GET['start_time']}>" name="start_time" />
+                                到 <input id="d_2" class="text date" type="text" onfocus="WdatePicker({startDate: '%y-%M-%d 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'d_1\')}'});" readonly="readonly" value="<{$_GET['end_time']}>" name="end_time" />
+                                &nbsp;
+                                &nbsp;
+                                用户名：<input type="text" size="18" name="username" value="<{$_GET['username']}>" />
+                                <input type="button" class="smallSub" value="搜索" name="search" onclick="$.CR.G.searchs();" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <table class="showTable">
+            <tr>
+                <th width="5%" id="id">序号</th>
+                <th>尝试用户名</th>
+                <th>尝试密码</th>
+                <th>出错次数</th>
+                <th>最后登录出错时间</th>
+            </tr>
+            <foreach name="logData[0]" item="values" key="k">
+                <tr>
+                    <td class="_id"><{$k+1}></td>
+                    <td><{$values['test_username']}></td>
+                    <td><{$values['test_password']}></td>
+                    <td><{$values['error_num']}></td>
+                    <td><{$values['error_time']|date="Y-m-d H:i:s",###}></td>
+                </tr>
+                </foreach>
+                <tr>
+                    <td colspan="7"><{$logData[1]}></td>
+                </tr>
+        </table>
+    </body>
+</html>

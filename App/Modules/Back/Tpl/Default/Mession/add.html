@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <include file="./Public/tpl/global_load.html" />
+        <include file="./App/Tpl/global_load.html" />
+    </head>
+    <body>
+        <include file="./App/Tpl/global_rule_navi.html" />
+        <div class="operateTitle">新增任务</div>
+        <form action="__ACTION__" method="post" id="formData">
+            <div class="btns" style="float:right;">
+                <input type="button" value="分派" id="confirmM" class="sub disp" />&nbsp;&nbsp;
+            </div>
+            <table class="showTable">
+                <tr>
+                    <th width="3%"></th>
+                    <th width="5%">序号</th>
+                    <th width="5%">产品ID</th>
+                    <th width="8%">产品品牌</th>
+                    <th width="14%">产品名称</th>
+                    <th width="14%">商品原价</th>
+                    <th width="14%">商品折扣价</th>
+                    <th width="5%">商品编码</th>
+                </tr>
+                <foreach name="dataArray['0']" item="pvalues" key="k">
+                    <tr>
+                        <td><input type='checkbox' name='id_all[]' value="<{$pvalues['cid']}>" /></td>
+                        <td><{$k+1}></td>
+                        <td><{$pvalues.ProductId}></td>
+                        <td><{$pvalues.cname}></td>
+                        <td><{$pvalues.Name}></td>
+                        <td><{$pvalues.Oprice}></td>
+                        <td><{$pvalues.Price}></td>
+                        <td><{$pvalues.Code}></td>
+                    </tr>
+                </foreach>
+                <tr>
+                    <td colspan="8"><{$dataArray[1]}></td>
+                </tr>
+            </table>
+        </form>
+        <script>
+            var id = '';
+            $('input[name="id_all[]"]').click(function (event) {
+                id = '';
+                $('input[name="id_all[]"]:checked').each(function () {
+                    id += $(this).val() + ',';
+                });
+            })
+            $('#confirmM').on('click', function () {
+                if (id) {
+                    id = id.substr(0, id.length - 1);
+                    openNewWindow("<{:U('dispatch',array('id'=>'" + id + "'))}>", '任务分派');
+                } else {
+                    _alert('请选择需要操作的数据！');
+                }
+            })
+        </script>
+    </body>
+</html>

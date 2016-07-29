@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+body {background:#02609B url(../Images/login_bg.gif) repeat-x;}
+img {vertical-align:middle;}
+.main {width:350px;background:#4674B0;margin:0px auto;color:#FFFFFF;padding:20px 0px;text-align:center;}
+div.main dl dt {text-indent:35px;text-align:left;}
+div.main dl dt span{background:url(../images/logo.png) no-repeat; width:120px; height:42px;display:block;float:left;margin: -16px -20px 10px 32px;}
+div.main dl dd,div.main dl dt  {font-family:Arial;font-size:20px;font-weight:bold;padding:12px 0px;}
+div.main dl dd input {font-size:16px;font-family:Arial;font-weight:bold;color:#404040;width:240px;border:1px solid #D0D0D0;padding-left:30px;height:30px;line-height:30px;}
+div.main dl dd input.username {background:#FFFFFF url(../images/icon24_login.png) no-repeat 6px 5px;}
+div.main dl dd input.password {background:#FFFFFF url(../images/icon24_login.png) no-repeat 6px -85px;}
+div.main dl dd input.code {background:#FFFFFF url(../images/icon24_login.png) no-repeat 6px -36px;width:115px;}
+div.main dl dd input.loginSub {color:#666666;border:1px solid #666666;font-weight:bold;font-size:16px;letter-spacing:2px;cursor:pointer;width:275px;text-align:center;padding-left:0px;height:40px;line-height:40px;background:#DDDDDD;}

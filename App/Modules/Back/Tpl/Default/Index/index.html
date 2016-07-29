@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
+        <title>数据管理平台</title>
+        <link rel="stylesheet" href="__PUBLIC__/modules/back/css/index.css" type="text/css" />
+        <script type="text/javascript" src="__PUBLIC__/js/jquery-1.10.2.min.js"></script>
+        <script type="text/javascript" src="__PUBLIC__/modules/back/js/index.js"></script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="logo FL"><a href="__APP__/Back/Index/index"><img src="__PUBLIC__/modules/back/images/logo.png" alt="" /></a></div>
+            <div class="mainNavi">
+                <div class="naviTop clearFloat">
+                    <p class="FL">欢迎您：<font color="#99FF00"><{$session['username']}></font>&nbsp;&nbsp;所属组：
+                        [
+                        <volist name="session['admin_group']" id="values" key="i">
+                            <if condition="$i gt 1"> ,</if>
+                            <{$values['title']}>
+                        </volist>
+                        ]
+                        &nbsp;&nbsp;<a href="__APP__/Back/Entrance/logout" class="logout">[退出]</a></p>
+                    <p class="FR" style="padding-right:10px;">
+                        <a href="###" src="<{:U('Back/Public/update_cache')}>" id="u_Cache">更新缓存</a>
+                    </p>
+                </div>
+                <p class="naviBottom">
+                    <volist name="ruleData" id="ruleValue" key="i" >
+                        <a href="###" <{$i==1 ? 'class="current"' : ''}>>
+                            <{$ruleValue['title']}>
+                        </a>
+                    </volist>
+                </p>
+            </div>
+        </div>
+        <div class="main clearFloat">
+            <div class="mainLeft FL">
+                <volist name="ruleData"  id='ruleValue' key='i' >
+                    <dl <{$i==1 ? '' : 'style="display:none;"'}>>
+                        <volist name="ruleValue['child']" id="childValues">
+                            <dt><{$childValues['title']}></dt>
+                            <volist  name="childValues['child']" id='childChildValues'>
+                                <if condition="($childChildValues['node_type'] eq 1)">
+                                    <dd src="__APP__<{$childChildValues['name']}>"><{$childChildValues['title']}></a></dd>
+                                </if>
+                            </volist>
+                        </volist>
+                    </dl>
+                </volist>
+            </div>
+            <div class="mainRight">
+                <a href="###" title="全屏" class="fullScreen" onclick="fullScreen()">&nbsp;&nbsp;</a>
+                <a href="###" title="取消全屏" class="cancelFullScreen" onclick="cancelFullScreen();" style="display: none">&nbsp;&nbsp;</a>
+                <div class="iframeContent">
+                    <iframe src="__APP__/Back/Index/show" class="mainIframe" name="mainIframe" frameborder="0" width="100%"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <{$Think.now}>
+        </div>
+    </body>
+</html>

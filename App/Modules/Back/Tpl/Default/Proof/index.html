@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <include file="./Public/tpl/global_load.html" />
+        <include file="./App/Tpl/global_load.html" />
+        <style>
+            .child_data{cursor: pointer;}
+        </style>
+    </head>
+    <body>
+        <include file="./App/Tpl/global_rule_navi.html" />
+        <form action="__ACTION__" method="get" name="search_form">
+            <table class="showTable">
+                <tr>
+                    <td colspan="7">
+                        <div class="marginTop10">
+                            分派时间段：
+                            <input id="d_1" class="text date" type="text" onfocus="WdatePicker({startDate: '%y-%M-%d 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss'})" readonly="readonly" value="<{$_GET['start_time']}>" name="start_time" />
+                            到 <input id="d_2" class="text date" type="text" onfocus="WdatePicker({startDate: '%y-%M-%d 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'d_1\')}'});" readonly="readonly" value="<{$_GET['end_time']}>" name="end_time" />
+                            &nbsp;&nbsp; 
+                            数据人员：<select name="data_user_id"><option value="">全部</option>
+                                <foreach name="dataUserArray" item="values">
+                                    <option value="<{$values.id}>"><{$values.username}></option>
+                                </foreach>
+                            </select><Br><br>
+                                    完成时间段：
+                                    <input id="d_3" class="text date" type="text" onfocus="WdatePicker({startDate: '%y-%M-%d 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss'})" readonly="readonly" value="<{$_GET['f_start_time']}>" name="f_start_time" />
+                                    到 <input id="d_4" class="text date" type="text" onfocus="WdatePicker({startDate: '%y-%M-%d 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'d_1\')}'});" readonly="readonly" value="<{$_GET['f_end_time']}>" name="f_end_time" />
+                                    &nbsp;&nbsp;
+
+                                    运营人员：<select name="operator_id"><option value="">全部</option>
+                                        <foreach name="optUserArray" item="values">
+                                            <option value="<{$values.id}>"><{$values.username}></option>
+                                        </foreach>
+                                    </select>&nbsp;&nbsp;
+                                    任务状态：<select name="mession_status">
+                                        <option value="0" <{$_GET['mession_status']=='0' ? 'selected="selected"' : ''}>>全部</option>
+                                        <option value="1" <{$_GET['mession_status']=='1' ? 'selected="selected"' : ''}>>待分派</option>
+                                        <option value="2" <{$_GET['mession_status']=='2' ? 'selected="selected"' : ''}>>已分派</option>
+                                        <option value="3" <{$_GET['mession_status']=='3' ? 'selected="selected"' : ''}>>待确认</option>
+                                        <option value="4" <{$_GET['mession_status']=='4' ? 'selected="selected"' : ''}>>已打回</option>
+                                        <option value="5" <{$_GET['mession_status']=='5' ? 'selected="selected"' : ''}>>已完成</option>
+                                        <option value="6" <{$_GET['mession_status']=='6' ? 'selected="selected"' : ''}>>已关闭</option>
+                                        <option value="7" <{$_GET['mession_status']=='7' ? 'selected="selected"' : ''}>>已付款</option>    
+                                    </select>&nbsp;&nbsp;
+                                    <input type="button" class="smallSub" value="搜索" name="search" onclick="$.CR.G.searchs();" />&nbsp;&nbsp;
+                                    </div>
+                                    </td>
+                                    </tr>
+                                    <tr>
+                                        <th width="5%">序号</th>
+                                        <th width="8%">任务Id</th>
+                                        <th width="10%">运营人员</th>
+                                        <th width="8%">数据人员</th>
+                                        <th width="14%">分派时间</th>
+                                        <th width="14%">完成时间</th>
+                                        <th width="5%">状态</th>
+                                    </tr>
+                                    <foreach name="taskArray[0]" item="values" key="key">
+                                        <tr>
+                                            <td><a class="child_data">+</a><{$key+1}></td>
+                                            <td><{$values['mession_id']}></td>
+                                            <td><{$values['oname']}></td>
+                                            <td><{$values['aname']}></td>
+                                            <td><{$values['dispatch_time']|date="Y-m-d H:i:s",###}></td>
+                                            <td><{$values['finished_time']?$values['finished_time']|date="Y-m-d H:i:s",###:''}></td>
+                                            <td>
+                                                <switch name="values['mession_status']">
+                                                    <case value="1">待分派</case>
+                                                    <case value="2">已分派</case>
+                                                    <case value="3">待确认</case>
+                                                    <case value="4">已打回</case>
+                                                    <case value="5">已完成</case>
+                                                    <case value="6">已关闭</case>
+                                                    <case value="7">已付款</case> 
+                                                </switch>
+                                            </td>
+                                        </tr>
+                                        <tr style="display:none;">
+                                            <td colspan="7" class="right">
+                                                <table class="showTable" style="width: 98%">
+                                                    <tr>
+                                                        <th width="5%">序号</th>
+                                                        <th width="10%">商品名称</th>
+                                                        <th width="8%">商品编号</th>
+                                                        <th width="14%">商品品牌</th>
+                                                        <th width="14%">商品价格</th>
+                                                        <th width="5%">其他</th>
+                                                    </tr>
+                                                    <empty name="values['group']">
+                                                        <tr><td colspan="7">暂无数据</td></tr>
+                                                        <else />
+                                                        <foreach name="values['group']" item="pvalues" key="k">
+                                                            <tr>
+                                                                <td><{$k+1}></td>
+                                                                <td><{$pvalues.Name}></td>
+                                                                <td><{$pvalues.Code}></td>
+                                                                <td><{$pvalues.cname}></td>
+                                                                <td><{$pvalues.Oprice}></td>
+                                                                <td><a href="#" onclick="openNewWindow('<{:U('shop_info')}>&id=<{$pvalues.ProductId}>&mid=<{$values['mession_id']}>', '免税店信息','80%')">免税店信息</a>
+                                                                </td>
+                                                            </tr>
+                                                        </foreach>
+                                                    </empty>
+
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </foreach>
+                                    <tr>
+                                        <td colspan="7" class="right"><{$taskArray[1]}></td>
+                                    </tr>
+                                    </table>
+                                    </form>
+                                    <script>
+                                        $('.child_data').on('click', function () {
+                                            if ($(this).html() == '+') {
+                                                $(this).html('-');
+                                                $(this).parent().parent().next().slideDown();
+                                            } else {
+                                                $(this).html('+');
+                                                $(this).parent().parent().next().slideUp();
+                                            }
+                                            //$(this).parent().parent().next().slideToggle();
+                                        });
+                                    </script>
+                                    </body>
+                                    </html>

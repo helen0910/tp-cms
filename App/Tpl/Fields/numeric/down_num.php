@@ -1,0 +1,1 @@
+<input type="text" name="info[<?php echo $this->form['field_name'];?>]" value="<?php echo $value;?>" <?php echo $this->form['input_attr'];?> size="<?php echo $this->setting['size'];?>" disabled="disabled" />

@@ -1,0 +1,1 @@
+<?php	return array ( 1 => array ( 'session_id' => '835vv0g0544dcid82voc8t2vt1', 'online_time' => 1467877727, 'handle_status' => 3, 'username' => 'admin', 'truename' => NULL, ), );?>

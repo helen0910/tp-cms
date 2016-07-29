@@ -1,0 +1,14 @@
+
+<div class="navi clearFloat">
+    <div class="naviDesc"><{$parentRuleName}></div>
+    <div class="naviAction">
+        <foreach name="ruleLink" item="values">
+            <?php 
+            $rule = explode('/',$values['name']);
+            ?>
+            <a class="<?php echo ACTION_NAME==$rule[3] ? 'current' : '';?>" href="<{:U(trim($values['name'],'/'))}>">
+                <u><{$values['title']}></u>
+            </a>
+        </foreach>
+    </div>
+</div>

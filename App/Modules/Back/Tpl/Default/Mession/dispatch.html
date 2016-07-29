@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <include file="./Public/tpl/global_load.html" />
+        <include file="./App/Tpl/global_load.html" />
+    </head>
+    <body>
+        <form action="__ACTION__" method="post" id="formData">
+            <table class="showTable">
+                <tr>
+                    <td>
+                        <div class="marginTop10">
+                            <div class="btns" style="float:right;">
+                                <input type="button" value="保存" onclick="_confirm('是否保存？', function () {
+                                        $.CR.G.bulkAction('<{:U('dispatch_save')}>&dataid=<{$dataid}>')});"  class="sub" />&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <foreach name="dataUserArray" item="values" key="k">
+                    <tr>
+                        <td> <input type='radio' name='id_all[]' value="<{$values['id']}>" />&nbsp;&nbsp;<{$values.username}></td>
+                    </tr>
+                </foreach>
+            </table>
+        </form>
+    </body>
+</html>

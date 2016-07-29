@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <include file="./Public/tpl/global_load.html" />
+        <include file="./App/Tpl/global_load.html" />
+    </head>
+    <body>
+        <div class="marginTop10">
+            <form action="__ACTION__" method="post" id="formData">
+                <input type="hidden" value="<{$pid}>" name="pid" />
+                <input type="hidden" value="<{$mid}>" name="mid" />
+                <input type="hidden" value="<{$dataArray[0]['mession_status']}>" name="meStatus">
+                    <table class="showTable">
+                        <tr>
+                            <th width="2%">序号</th>
+                            <th width="8%">免税店名称</th>
+                            <th width="8%">商品名称</th>
+                            <th width='30%'>商品URL</th>
+                            <th width="10%">商品价格</th>
+                        </tr>
+                        <foreach name="dataArray" item="pvalues" key="k">
+                            <tr>
+                                <td><{$k+1}></td>
+                                <td><{$pvalues.shop_name}></td>
+                                <td><{$pvalues.product_name}></td>
+                                <if  condition="$pvalues.status eq 1" >
+                                    <input value='<{$pvalues.id}>' type='hidden' name="product[<{$pvalues.id}>][name]"/>
+                                    <td><input value='<{$pvalues.product_url}>' type='text' style='width:300px;'  name="product[<{$pvalues.id}>][purl]" /></td>
+                                    <td><input value='<{$pvalues.product_price}>' type='text' style='width:40px;' name="product[<{$pvalues.id}>][price]" /></td>
+                                    <else/>
+                                    <td><{$pvalues.product_url}></td>
+                                    <td><{$pvalues.product_price}></td>
+                                </if>
+                            </tr>
+                        </foreach>
+                        <if  condition="$count_shop egt 1" >
+                            <tr>
+                                <td colspan="8">
+                                    <div class="marginTop10">
+                                        <div class="btns" style="float:right;">
+                                            <input type="submit" name="send" class="sub" value="确定" id="send" />
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </if>
+                    </table>
+            </form>
+        </div>
+        <script>
+            $('#send').on('click', function () {
+                art.dialog.open.origin.location.href = 'admin.php/Back/Proof/index';
+            })
+        </script>
+    </body>
+</html>

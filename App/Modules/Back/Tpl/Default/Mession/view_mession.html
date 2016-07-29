@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <include file="./Public/tpl/global_load.html" />
+        <include file="./App/Tpl/global_load.html" />
+    </head>
+    <body>
+        <form action="__ACTION__" method="post" id="formData">
+            <input type="hidden" value="<{$mid}>" name="mid" />
+            <table class="showTable">
+                <tr>
+                    <td colspan="7">
+                        <div class="marginTop10">
+                            <div class="btns" style="float:right;">
+                                <input type="button" value="打回"  onclick="_confirm('是否打回数据？', function () {
+                                    $.CR.G.bulkAction('<{:U('back_finish',array('mid'=>$mid))}>')
+                                    });" class="sub" />&nbsp;&nbsp;
+                                <input type="submit" name="send" class="sub" value="确定" id="send" />&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th width="5%">
+                    </th>
+                    <th width="5%">序号</th>
+                    <th width="10%">商品名称</th>
+                    <th width="8%">商品编号</th>
+                    <th width="14%">商品品牌</th>
+                    <th width="14%">商品原价</th>
+                    <th width="14%">数据状态</th>
+                </tr>
+                <foreach name="dataArray[0]" item="pvalues" key="k">
+                    <tr>
+                        <td><input type='checkbox' name='id_all[]' value="<{$pvalues['cid']}>" /></td>
+                        <td><a class="child_data" href="#">+</a><{$k+1}></td>
+                        <td><{$pvalues.Name}></td>
+                        <td><{$pvalues.Code}></td>
+                        <td><{$pvalues.cname}></td>
+                        <td><{$pvalues.Oprice}></td>
+                        <td><switch name="pvalues['check_status']">
+                                <case value="1">待校验</case>
+                                <case value="2">已打回</case>
+                                <case value="3">打回待校验</case>
+                                <case value="4">待入库</case>
+                            </switch></td>
+                    </tr>
+                    <tr style="display:none;">
+                        <td colspan="7" class="right">
+                            <table class="showTable" style="width: 98%">
+                                <tr>
+                                    <th width="2%">序号</th>
+                                    <th width="8%">免税店名称</th>
+                                    <th width="8%">商品名称</th>
+                                    <th width='15%'>商品URL</th>
+                                    <th width="6%">商品价格</th>
+                                    <th width="6%">商品状态操作</th>
+                                </tr>
+                                <empty name="pvalues['group']">
+                                    <tr><td colspan="7">暂无数据</td></tr>
+                                    <else />
+                                    <foreach name="pvalues['group']" item="values" key="key">
+
+                                        <tr>
+                                            <td><{$key+1}></td>
+                                            <td><{$values.shop_name}></td>
+                                            <td><{$values.product_name}></td>
+                                            <if condition="$values.status eq 0">
+                                                <td><{$values.product_url}></td>
+                                                <td><{$values.product_price}></td>
+                                                <else/>
+                                                <input value='<{$values.id}>' type='hidden' name="product[<{$values.id}>][name]"/>
+                                                <td><input value='<{$values.product_url}>' type='text' style='width:300px;'  name="product[<{$values.id}>][purl]" /></td>
+                                                <td><input value='<{$values.product_price}>' type='text' style='width:40px;' name="product[<{$values.id}>][price]" /></td>
+                                            </if>
+                                            <td>&nbsp;
+                                                <a href="#" onclick="_confirm('是否修改状态为正确？', function () {update_sp_status(0,<{$values.id}>,<{$pvalues[cid]}>)});" >正确</a>&nbsp;|&nbsp;
+                                                <a href="#" onclick="_confirm('是否修改状态为错误？', function () {update_sp_status(1,<{$values.id}>,<{$pvalues[cid]}>)});" >错误</a>&nbsp;</td>
+                                        </tr>
+                                    </foreach>
+                                </empty>
+
+                            </table>
+                        </td>
+                    </tr>
+                </foreach>
+                <tr>
+                    <td colspan="7"><{$dataArray[1]}></td>
+                </tr>
+            </table>
+        </form>
+        <script>
+            $('.child_data').on('click', function () {
+                if ($(this).html() == '+') {
+                $(this).html('-');
+                        $(this).parent().parent().next().slideDown();
+                } else {
+                $(this).html('+');
+                        $(this).parent().parent().next().slideUp();
+                }
+            });
+            $('#send').on('click', function () {
+                art.dialog.open.origin.location.href = 'admin.php/Back/Mession/index';
+            });
+            function update_sp_status(status,id,dataid){
+                $.ajax({
+                    url:'admin.php/Back/Mession/update_sp_status',
+                    data:{id:id,status:status,dataid:dataid},
+                    type:'POST',
+                    dataType:'json',
+                    boforeSend:function(){art.dialog.tips('数据正在提交...', 10); },
+                    success:function(data){
+                    _tips(data, true);
+                    },
+                    error:function(){art.dialog.tips('发送数据至服务器失败！'); }
+                });
+            }
+ </script>
+    </body>
+</html>

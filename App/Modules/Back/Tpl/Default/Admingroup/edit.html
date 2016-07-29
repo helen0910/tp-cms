@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <include file="./Public/tpl/global_load.html" />
+        <include file="./App/Tpl/global_load.html" />
+    </head>
+    <body>
+        <include file="./App/Tpl/global_rule_navi.html" />
+        <div class="operateTitle">编辑管理员组</div>
+        <form action="__ACTION__" method="post" id="formData">
+            <input type="hidden" name="id" value="<{$current['id']}>" />
+            <input type="hidden" name="token" value="<{$token}>" />
+            <table class="formTable">
+                <tr>
+                    <td class="left"><span class="setRed">*</span>&nbsp;<span class="Validform_label">组角色名：</span></td>
+                    <td class="right">
+                        <input type="text" class="text normal" size="35" name="title" value="<{$current['title']}>" datatype="s1-30" errormsg="组角色名格式不正确！" />
+                        <span class="setDesc Validform_checktip">1-30个字符</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">备注：</td>
+                    <td class="right">
+                        <textarea class="textCont" cols="50" name="remark" datatype="s1-255" errormsg="备注格式不正确！"  ignore="ignore"><{$current['remark']}></textarea>
+                        <span class="setDesc Validform_checktip"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">状态：</td>
+                    <td class="right">
+                        <label>正常&nbsp;<input type="radio" value="1" name="status" <{$current['status']==1 ? 'checked="checked"' : ''}> /></label>
+                        <label>禁用&nbsp;<input type="radio" value="2" name="status" <{$current['status']==2 ? 'checked="checked"' : ''}> /></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">&nbsp;&nbsp;</td>
+                    <td class="right">
+                        <input type="submit" name="send" class="sub" value="提交" />
+                        <input type="reset" class="sub" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>

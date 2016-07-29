@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <include file="./Public/tpl/global_load.html" />
+        <include file="./App/Tpl/global_load.html" />
+        <style type="text/css">
+            table.showTable tr td {overflow:hidden;}
+        </style>
+    </head>
+    <body>
+        <include file="./App/Tpl/global_rule_navi.html" />
+        <div class="search clearFloat">
+            <form action="__ACTION__" method="get" name="search_form">
+                <table>
+                    <tr>
+                        <td class="left">搜索[Search]：</td>
+                        <td class="right">
+                            <div>
+                                时间：<input id="d_1" class="text date" type="text" onfocus="WdatePicker({startDate: '%y-%M-%d 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss'})" readonly="readonly" value="<{$_GET['start_time']}>" name="start_time" />
+                                到 <input id="d_2" class="text date" type="text" onfocus="WdatePicker({startDate: '%y-%M-%d 00:00:00', dateFmt: 'yyyy-MM-dd HH:mm:ss', minDate: '#F{$dp.$D(\'d_1\')}'});" readonly="readonly" value="<{$_GET['end_time']}>" name="end_time" />
+                                &nbsp;
+                                &nbsp;
+                                用户名：<input type="text" size="18" name="username" value="<{$_GET['username']}>" />
+                                <input type="button" class="smallSub" value="搜索" name="search" onclick="$.CR.G.searchs();" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <table class="showTable">
+            <tr>
+                <th width="5%">序号</th>
+                <th width="7%">用户</th>
+                <th width="10%">记录时间</th>
+                <th width="10%">内容</th>
+            </tr>
+            <foreach name="logData[0]" item="values" key="k">
+                <tr>
+                    <td><{$k+1}></td>
+                    <td><notempty name="$values['username']">未知<else/><{$values['username']}></notempty></td>
+                    <td><{$values['save_time']|date="Y-m-d H:i:s",###}></td>
+                    <td><{$values['content']}></td>
+                </tr>
+            </foreach>
+            <tr class="page">
+                <td colspan="10"><{$logData[1]}></td>
+            </tr>
+        </table>
+        <script type="text/javascript">
+            $(function () {
+                $('[name="id_all[]"]').click(function (event) {
+                    event.stopPropagation();
+                })
+                $('.showTable tr[class!="page"]').click(function () {
+                    var desc = [];
+                    var i = 0;
+                    $('.showTable th[id!="id"]').each(function () {
+                        desc[i] = $(this).html();
+                        i++;
+                    })
+                    var _html = '', i = 0;
+                    $(this).children('td[class!="_id"]').each(function () {
+                        _html += '<div style="padding:7px 0px;border-bottom:1px dashed #CCCCCC;width:100%;"><b>' + desc[i] + '：</b>' + $(this).html() + '</div>';
+                        i++;
+                    })
+                })
+            })
+        </script>
+    </body>
+</html>
